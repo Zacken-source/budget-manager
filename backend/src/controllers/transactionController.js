@@ -92,3 +92,45 @@ export const deleteTransaction = async (req, res, next) => {
         res.status(204).send()
     } catch (err) { next(err) }
 }
+
+export const getStats = async (req, res, next) => {
+    try {
+        const uid = req.user.id
+        const [summary] = await pool.query(
+            `SELECT
+                COALSESCE(SUM(CASE WHEN type = 'income' THEN amount END), 0) AS total_income,
+                COALESCE(SUM(CASE WHEN type = 'expense' THEN amount END), 0) AS total_expense
+            FROM transactions WHERE user_id = ?`, [uid]
+        )
+        const [byCategory] = await pool.query(
+            `SELECT c.name, c.icon, c.type, COALESCE(SUM(t.amount), 0) AS total
+            FROM transactions t JOIN categories c ON t.category_id = c.id
+            WHERE t.user_id = ? GROUP BY c.id, t.type ORDER BY total DESC`, [uid]
+        )
+        const [byMonth] = await pool.query(
+            `SELECT DATE_FORMAT(date, '%Y-%m') AS month,
+            COALESCE(SUM(CASE WHEN type='income' THEN amount END), 0) AS income,
+            COALESCE(SUM(CASE WHEN type='expense' THEN amount END), 0) AS expenses
+            FROM transactions
+            WHERE user_id = ? AND date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+            GROUP BY month ORDER BY month ASC`, [uid]
+        )
+        res.json({ summary: summary[0], byCategory, byMonth })
+    } catch (err) { next(err) }
+}
+
+export const exportCSV = async (req, res, next) => {
+    try {
+        const [rows] = await pool.query(
+            `SELECT t.date, t.type, t.amount, c.name AS category, t.description
+            FROM transactions t JOIN categories c ON t.category_id = c.id
+            WHERE t.user_id = ? ORDER BY t.date DESC`, [req.user.id]
+        )
+        const header = 'Date,Type,Montant,Catégorie,Description'
+        const line = rows.map(r => `${r.date},${r.type},${r.amount},${r.category},"${r.description ?? ''}"`
+        )
+        res.setHeader('Content-Type', 'text/csv')
+        res.setHeader('Content-Disposition', 'attachment; filename="transactions.csv"')
+        res.send([header, ...line].join('\n'))
+    } catch (err) { next(err) }
+}
