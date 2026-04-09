@@ -1,3 +1,4 @@
+SET NAMES utf8mb4;
 CREATE DATABASE IF NOT EXISTS budget_manager
 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -15,7 +16,7 @@ CREATE TABLE IF NOT EXISTS categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     type ENUM('income', 'expense') NOT NULL,
-    icon VARCHAR(10),
+    icon VARCHAR(50),
     user_id INT DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
