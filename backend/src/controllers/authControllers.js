@@ -29,7 +29,7 @@ export const register = async (req, res, next) => {
          });
     } catch (err) {
         if (err.code === 'ER_DUP_ENTRY') {
-            return res.status(400).json({ error: 'Email ou username déjà pris' });
+            return res.status(409).json({ error: 'Email ou username déjà pris' });
         }
         next(err);
     }
@@ -47,7 +47,12 @@ export const login = async (req, res, next) => {
             return res.status(401).json({ error: 'Identifiants incorrects' });
         }
         const {password: _pwd, ...safeUser} = user;
-        res.json({ token: signToken(safeUser)})
+        res.json({ token: signToken(safeUser),
+            user: safeUser });
+
+        const isValid = await bcrypt.compare(password, user.password);
+
+        console.log("RESULT:", isValid);
     } catch (err) {
         next(err);
     }

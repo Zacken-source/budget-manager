@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { requireAuth } from '../middleware/auth.js';
-import { getCategories, createCategory } from '../controllers/categoryController.js';
+import { getCategories, createCategory } from '../controllers/categoryControllers.js';
 
 const router = Router();
 

@@ -5,6 +5,7 @@ import TransactionRow  from '../components/TransactionRow'
 import Charts from '../components/Charts'
 import { useTransactions } from '../hooks/useTransactions'
 import { exportCSV } from '../api/transactions'
+import Filters from '../components/Filters'
 
 export default function DashboardPage() {
   const [filters, setFilters] = useState({})
@@ -59,14 +60,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-slate-800">Transactions</h2>
             <div className="flex gap-2">
-              <select
-                className="input w-auto text-sm py-1.5"
-                onChange={e => setFilters(f => ({ ...f, type: e.target.value || undefined }))}
-              >
-                <option value="">Tout</option>
-                <option value="income">Revenus</option>
-                <option value="expense">Dépenses</option>
-              </select>
+              <Filters onFilter={setFilters} />
               <button onClick={handleExport} className="btn-secondary text-sm py-1.5">
                 Export CSV
               </button>

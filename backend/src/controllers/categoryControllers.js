@@ -3,8 +3,12 @@ import pool from '../config/database.js';
 export const getCategories = async (req, res, next) => {
     try {
         const [rows] = await pool.query(
-            'SELECT id, name, icon FROM categories WHERE user_id = ? ORDER BY name', [req.user.id]
-        );
+            `SELECT id, name, icon, type 
+            FROM categories 
+            WHERE user_id IS NULL OR user_id = ?
+            ORDER BY name`,
+            [req.user.id]
+            );
         res.json(rows);
     } catch (error) {
         next(error);
