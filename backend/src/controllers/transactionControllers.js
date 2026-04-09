@@ -98,7 +98,7 @@ export const getStats = async (req, res, next) => {
         const uid = req.user.id
         const [summary] = await pool.query(
             `SELECT
-                COALSESCE(SUM(CASE WHEN type = 'income' THEN amount END), 0) AS total_income,
+                COALESCE(SUM(CASE WHEN type = 'income' THEN amount END), 0) AS total_income,
                 COALESCE(SUM(CASE WHEN type = 'expense' THEN amount END), 0) AS total_expense
             FROM transactions WHERE user_id = ?`, [uid]
         )
