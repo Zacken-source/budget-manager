@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { getCategories } from '../api/categories'
 
 const EMPTY = { amount: '', type: 'expense', category_id: '', description: '', date: new Date().toISOString().split('T')[0] }
-
 export default function TransactionForm({ onSubmit, initial = null, onCancel }) {
   const [form, setForm] = useState(initial || EMPTY)
   const [categories, setCategories] = useState([])
@@ -99,5 +98,6 @@ export default function TransactionForm({ onSubmit, initial = null, onCancel }) 
         )}
       </div>
     </form>
+    
   )
 }
