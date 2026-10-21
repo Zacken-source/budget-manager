@@ -63,7 +63,7 @@ export default function Charts({ refreshKey }) {
   }))
 
   return (
-    <div className="grid grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
       {/* BAR CHART */}
       <div className="card">

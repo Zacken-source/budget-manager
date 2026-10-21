@@ -9,7 +9,7 @@ export default function Layout({ children }) {
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <span className="font-bold text-slate-900 text-lg">💰 Budget Manager</span>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-500">
+            <span className="hidden sm:inline text-sm text-slate-500">
               Bonjour, <span className="font-medium text-slate-700">{user?.username}</span>
             </span>
             <button onClick={logout} className="btn-secondary text-sm py-1.5">

@@ -22,7 +22,7 @@ export default function TransactionRow({ transaction: t, onUpdate, onDelete }) {
   )
 
   return (
-    <li className="flex items-center justify-between px-4 py-3 hover:bg-slate-50 rounded-lg transition-colors">
+    <li className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between px-4 py-3 hover:bg-slate-50 rounded-lg transition-colors">
       <div className="flex items-center gap-3">
         <span className="text-xl">{t.category_icon}</span>
         <div>
