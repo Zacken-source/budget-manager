@@ -22,10 +22,20 @@ Application fullstack de gestion budgétaire personnelle.
 
 ### Backend
 
+#### Sous sous Linux
 ```bash
 cd backend
 cp .env.example .env    # remplis les variables
 mysql -u root -p < src/config/schema.sql
+npm install
+npm run dev
+```
+#### Sous Windows (PowerShell + XAMPP)
+
+```powershell
+cd backend
+Copy-Item .env.example .env
+C:\xampp\mysql\bin\mysql.exe -u root --default-character-set=utf8mb4 -e "source src/config/schema.sql"
 npm install
 npm run dev
 ```
