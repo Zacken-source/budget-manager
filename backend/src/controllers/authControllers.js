@@ -50,9 +50,6 @@ export const login = async (req, res, next) => {
         res.json({ token: signToken(safeUser),
             user: safeUser });
 
-        const isValid = await bcrypt.compare(password, user.password);
-
-        console.log("RESULT:", isValid);
     } catch (err) {
         next(err);
     }

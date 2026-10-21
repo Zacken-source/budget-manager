@@ -55,7 +55,7 @@ export default function DashboardPage() {
   return (
     <Layout>
       {/* KPI */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="card text-center">
           <p className="text-xs text-slate-500">Solde</p>
           <p className="text-2xl font-bold">
@@ -78,7 +78,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* FORM */}
         <div className="card">
           <h2 className="font-semibold mb-4">Nouvelle transaction</h2>
@@ -86,11 +86,11 @@ export default function DashboardPage() {
         </div>
 
         {/* LIST */}
-        <div className="col-span-2 card">
-          <div className="flex justify-between mb-4">
+        <div className="lg:col-span-2 card">
+          <div className="flex flex-col gap-3 md:flex-row md:justify-between md:items-end mb-4">
             <h2 className="font-semibold">Transactions</h2>
 
-            <div className="flex gap-2">
+            <div className="flex flex-wrap items-end gap-2">
               <Filters onFilter={setFilters} />
 
               <button onClick={handleExport} className="btn-secondary">
