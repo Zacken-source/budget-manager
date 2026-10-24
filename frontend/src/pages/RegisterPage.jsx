@@ -50,7 +50,7 @@ export default function RegisterPage() {
                 className="input"
                 value={form.username}
                 onChange={handleChange}
-                placeholder="john_doe"
+                placeholder="zacken"
                 required
               />
             </div>

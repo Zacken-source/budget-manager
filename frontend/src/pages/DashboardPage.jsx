@@ -16,7 +16,7 @@ export default function DashboardPage() {
 
   const handleAdd = async (data) => {
     await add(data)
-    setRefreshKey(prev => prev + 1) // 🔥 trigger charts refresh
+    setRefreshKey(prev => prev + 1) // trigger charts refresh
   }
 
   const handleUpdate = async (id, data) => {

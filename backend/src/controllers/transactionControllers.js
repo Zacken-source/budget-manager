@@ -62,14 +62,21 @@ export const updateTransaction = async (req, res, next) => {
     try {
         const { id } = req.params
         const { category_id, amount, type, description, date } = req.body
+        if (!category_id || !amount || !type || !date)
+            return res.status(400).json({ error: 'Champs requis manquants' })
+        if (!['income', 'expense'].includes(type))
+            return res.status(400).json({ error: 'Type invalide' })
+        if (isNaN(amount) || Number(amount) <= 0)
+            return res.status(400).json({ error: 'Montant doit etre positif' })
+        
         const [check] = await pool.query(
             'SELECT id FROM transactions WHERE id = ? AND user_id = ?',
             [id, req.user.id]
         )
-        if (!check[0]) return res.status(404).json({ error: 'Transaction introuvable' })
-        await pool.query(
-            'UPDATE transactions SET category_id=?,amount=?,type=?,description=?,date=? WHERE id=?',
-            [category_id, amount, type, description || null, date, id]
+        if (!check[0]) return res.status(404).json({ error: 'Transaction introuvable' })       
+            await pool.query(
+            'UPDATE transactions SET category_id=?,amount=?,type=?,description=?,date=? WHERE id=? AND user_id = ?',
+            [category_id, amount, type, description || null, date, id, req.user.id]
         )
         const [rows] = await pool.query(
             `SELECT t.*, c.name AS category_name, c.icon AS category_icon
@@ -88,7 +95,7 @@ export const deleteTransaction = async (req, res, next) => {
             [id, req.user.id]
         )
         if (!check[0]) return res.status(404).json({ error: 'Transaction introuvable' })
-        await pool.query('DELETE FROM transactions WHERE id = ?', [id])
+        await pool.query('DELETE FROM transactions WHERE id = ? AND user_id = ?', [id, req.user.id])
         res.status(204).send()
     } catch (err) { next(err) }
 }
